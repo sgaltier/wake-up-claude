@@ -1,0 +1,3 @@
+# Ces fichiers sont consommes par Linux/Docker : toujours en LF,
+# meme sur un poste Windows (sinon "bad interpreter: /bin/bash^M").
+* text=auto eol=lf

@@ -5,10 +5,19 @@ services:
     restart: unless-stopped
     environment:
       # Token lu depuis le fichier .env (non versionné, voir .env.example).
+      # La syntaxe :? fait échouer `docker compose up` si la variable manque,
+      # plutôt que de démarrer un container qui échouera silencieusement.
       # NE JAMAIS mettre ANTHROPIC_API_KEY ici : ça basculerait sur la
       # facturation API au lieu d'utiliser ton abonnement Pro/Max.
-      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN}
-      - TZ=Europe/Paris
+      # Le fuseau horaire n'est pas redéfini ici : il est fixé une seule fois
+      # dans le Dockerfile (ENV TZ), pour éviter toute divergence.
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN:?definis CLAUDE_CODE_OAUTH_TOKEN dans le fichier .env}
     volumes:
-      # Optionnel : persiste les logs du cron entre redémarrages du container
-      - ./logs:/var/log
+      # Logs du cron, persistés entre redémarrages du container
+      - ./logs:/app/logs
+      # État de Claude Code (config, onboarding) — sinon réinitialisé à chaque
+      # recréation du container
+      - claude-home:/home/claude/.claude
+
+volumes:
+  claude-home:

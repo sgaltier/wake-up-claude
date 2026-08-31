@@ -48,7 +48,7 @@ docker exec -it claude-cron cat /var/log/claude-cron.log
 docker exec -it claude-cron crontab -l
 ```
 
-Le premier vrai test aura lieu au prochain créneau (7h, 12h ou 17h).
+Le premier vrai test aura lieu au prochain créneau (6h30, 12h ou 17h30).
 Pour tester tout de suite sans attendre, lance manuellement :
 
 ```bash

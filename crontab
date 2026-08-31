@@ -2,8 +2,12 @@
 # Format : minute heure jour mois jour_semaine commande
 # Les horaires sont interprétés selon le TZ défini dans le Dockerfile (Europe/Paris)
 
-30 6  * * * /app/trigger.sh >> /var/log/claude-cron.log 2>&1
-0 12 * * * /app/trigger.sh >> /var/log/claude-cron.log 2>&1
-30 17 * * * /app/trigger.sh >> /var/log/claude-cron.log 2>&1
+# La sortie est dupliquée avec tee : une copie dans /var/log/claude-cron.log
+# (persisté via le volume ./logs) et une copie sur /proc/1/fd/1, le stdout
+# du PID 1 du container (tini) — c'est ce flux que Container Manager affiche
+# dans son onglet "Journal" (équivalent de `docker logs`).
+30 6  * * * /app/trigger.sh 2>&1 | tee -a /var/log/claude-cron.log > /proc/1/fd/1
+0 12 * * * /app/trigger.sh 2>&1 | tee -a /var/log/claude-cron.log > /proc/1/fd/1
+30 17 * * * /app/trigger.sh 2>&1 | tee -a /var/log/claude-cron.log > /proc/1/fd/1
 
 # Ligne vide obligatoire en fin de fichier pour crond

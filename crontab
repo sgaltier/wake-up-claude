@@ -1,0 +1,9 @@
+# Déclenche la fenêtre de 5h de Claude à heures fixes : 6h30, 12h, 17h30
+# Format : minute heure jour mois jour_semaine commande
+# Les horaires sont interprétés selon le TZ défini dans le Dockerfile (Europe/Paris)
+
+30 6  * * * /app/trigger.sh >> /var/log/claude-cron.log 2>&1
+0 12 * * * /app/trigger.sh >> /var/log/claude-cron.log 2>&1
+30 17 * * * /app/trigger.sh >> /var/log/claude-cron.log 2>&1
+
+# Ligne vide obligatoire en fin de fichier pour crond

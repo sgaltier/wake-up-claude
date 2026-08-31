@@ -4,11 +4,10 @@ services:
     container_name: claude-cron
     restart: unless-stopped
     environment:
-      # Colle ici le token généré une fois sur ta machine avec :
-      #   claude setup-token
+      # Token lu depuis le fichier .env (non versionné, voir .env.example).
       # NE JAMAIS mettre ANTHROPIC_API_KEY ici : ça basculerait sur la
       # facturation API au lieu d'utiliser ton abonnement Pro/Max.
-      - CLAUDE_CODE_OAUTH_TOKEN=colle_ton_token_ici
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN}
       - TZ=Europe/Paris
     volumes:
       # Optionnel : persiste les logs du cron entre redémarrages du container

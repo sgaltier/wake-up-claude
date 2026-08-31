@@ -18,25 +18,22 @@ plus jamais réaffiché.
 
 ## Étape 2 — Configurer le token dans le projet
 
-Ouvre `docker-compose.yml` et remplace `colle_ton_token_ici` par le token
-généré. Pour plus de sécurité, tu peux à la place créer un fichier
-`.env` (non versionné) contenant :
+Copie `.env.example` vers `.env` (ce fichier est ignoré par git, voir
+`.gitignore`) et colle ton token :
 
 ```
 CLAUDE_CODE_OAUTH_TOKEN=le_token_ici
 ```
 
-et remplacer dans `docker-compose.yml` :
-```yaml
-environment:
-  - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN}
-```
+`docker-compose.yml` lit automatiquement ce fichier `.env` et injecte la
+variable dans le container — aucune modification du `docker-compose.yml`
+n'est nécessaire.
 
 ## Étape 3 — Déployer sur le Synology
 
 1. Copie tout le dossier (`Dockerfile`, `crontab`, `trigger.sh`,
-   `docker-compose.yml`) dans un dossier partagé, par exemple via File
-   Station : `/docker/claude-cron/`.
+   `docker-compose.yml`, `.env`) dans un dossier partagé, par exemple via
+   File Station : `/docker/claude-cron/`.
 2. Dans **Container Manager** → **Projet** → **Créer**, pointe vers ce
    dossier (il détecte automatiquement le `docker-compose.yml`).
 3. Lance le build puis démarre le container.

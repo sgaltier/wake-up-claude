@@ -57,6 +57,14 @@ docker exec -it claude-cron /app/trigger.sh
 
 ## Notes importantes
 
+- **Le container tourne sous un utilisateur non-root (`claude`)**, pas
+  sous `root`. C'est nécessaire : Claude Code refuse de fonctionner en
+  mode automatisé (`--dangerously-skip-permissions`) sous root, par
+  sécurité. Le démon `crond` démarre bien en root (comportement standard
+  d'Alpine), mais exécute les tâches planifiées avec l'utilisateur
+  propriétaire du fichier crontab — ici `claude`.
+
+
 - **Le token n'expire pas comme un mot de passe classique**, mais s'il est
   révoqué (déconnexion sur claude.ai, changement de mot de passe...), le
   cron échouera silencieusement — pense à consulter `claude-cron.log` de
